@@ -1,0 +1,9 @@
+Package: com.hagiaiky010.myiostweak
+Name: My iOS Tweak
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Module tuỳ chỉnh góc nhìn game iOS
+Maintainer: hagiaiky010-arch
+Author: hagiaiky010-arch
+Section: Tweaks
