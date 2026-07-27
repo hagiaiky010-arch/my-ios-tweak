@@ -16,5 +16,5 @@ jobs:
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: iOS-Tweak-Dylib
+        name: iOS-Tweak.cpp-Dylib
         path: packages/*.dylib
