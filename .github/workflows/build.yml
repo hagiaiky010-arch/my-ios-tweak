@@ -23,10 +23,10 @@ jobs:
         mv sdks-master/* ~/theos/sdks/
         rm -rf sdks-master master.zip
 
-    - name: Build Tweak Package
+        - name: Build Tweak Package
       run: |
-        export THEOS=~/theos
-        make package FINALPACKAGE=1 SYSROOT=~/theos/sdks/iPhoneOS14.5.sdk
+        make package FINALPACKAGE=1 THEOS=~/theos SYSROOT=~/theos/sdks/iPhoneOS14.5.sdk
+
         
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
