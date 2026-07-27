@@ -1,6 +1,9 @@
 name: Build iOS Tweak
 on: [push, pull_request]
 
+env:
+  THEOS: /home/runner/theos
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,20 +16,18 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y lzma liblzma-dev build-essential git ccache curl unzip
         bash -c "$(curl -fsSL https://githubusercontent.com)"
-        echo "THEOS=~/theos" >> $GITHUB_ENV
 
     - name: Download iOS SDK
       run: |
-        mkdir -p ~/theos/sdks
-        curl -LO https://github.com/theos/sdks/archive/master.zip
+        mkdir -p $THEOS/sdks
+        curl -LO https://github.com
         unzip master.zip
-        mv sdks-master/* ~/theos/sdks/
+        mv sdks-master/* $THEOS/sdks/
         rm -rf sdks-master master.zip
 
-        - name: Build Tweak Package
+    - name: Build Tweak Package
       run: |
-        make package FINALPACKAGE=1 THEOS=~/theos SYSROOT=~/theos/sdks/iPhoneOS14.5.sdk
-
+        make package FINALPACKAGE=1 SYSROOT=$THEOS/sdks/iPhoneOS14.5.sdk
         
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
