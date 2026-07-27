@@ -8,14 +8,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Theos and iOS SDK
-      uses: upm-center/setup-theos@v1
-      with:
-        theos-version: 'master'
+    - name: Set up Theos Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y lzma liblzma-dev build-essential git ccache curl unzip
+        bash -c "$(curl -fsSL https://githubusercontent.com)"
+        echo "THEOS=~/theos" >> $GITHUB_ENV
+
+    - name: Download iOS SDK
+      run: |
+        mkdir -p ~/theos/sdks
+        curl -LO https://github.com/theos/sdks/archive/master.zip
+        unzip master.zip
+        mv sdks-master/* ~/theos/sdks/
+        rm -rf sdks-master master.zip
 
     - name: Build Tweak Package
       run: |
-        make package FINALPACKAGE=1
+        export THEOS=~/theos
+        make package FINALPACKAGE=1 SYSROOT=~/theos/sdks/iPhoneOS14.5.sdk
         
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
