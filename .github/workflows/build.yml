@@ -8,19 +8,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Theos Environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y lzma liblzma-dev build-essential git ccache
-        bash -c "$(curl -fsSL https://githubusercontent.com)"
-
     - name: Build Tweak Package
       run: |
-        export THEOS=~/theos
-        make package FINALPACKAGE=1
+        mkdir -p packages
+        clang -shared -dynamiclib -o packages/MyIOSTweak.dylib Tweak.xm -arch arm64
         
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: iOS-Tweak-Deb
-        path: packages/*.deb
+        name: iOS-Tweak-Dylib
+        path: packages/*.dylib
